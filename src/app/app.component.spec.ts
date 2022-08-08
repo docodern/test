@@ -1,9 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        InfiniteScrollModule 
+      ],
       declarations: [
         AppComponent
       ],
@@ -26,6 +32,14 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('test app is running!');
+    expect(compiled.querySelector('div')?.textContent).toContain('test app is running!');
+  });
+
+  it('should load netxt page', () => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.componentInstance;
+    fixture.detectChanges();
+    app.onScroll();
+    expect(app.page).toEqual(2);
   });
 });
